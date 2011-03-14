@@ -8,11 +8,19 @@
 cd ~/
 
 #check for olddir should go here, for now it will just make the directory.
-mkdir Maildir/.oldmail
+if [[ ! -d Maildir/.oldmail  ]]; then
+				if ! mkdir -p Maildir/.oldmail; then
+					echo "Backup path ~/Maildir/.oldmail does not exist and I could not create the directory!"
+					exit 1
+				fi
+			fi
+
+
+#mkdir Maildir/.oldmail
 
 
 #copy files into new folder
-rsync -a --progress ~/Maildir/.snapshot/hourly.2/cur/ ~/Maildir/.oldmail/cur/
+#rsync -a --progress ~/Maildir/.snapshot/hourly.2/cur/ ~/Maildir/.oldmail/cur/
 
 
 #Ending message
