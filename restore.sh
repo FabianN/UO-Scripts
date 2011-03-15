@@ -7,13 +7,18 @@
 # Go to home directory
 cd ~/
 
-#check for olddir should go here, for now it will just make the directory.
+
+
+
+#Does the .oldmail dir exist?
+#To do: if .oldmail exists, put it into a sub-folder? (prompt as a question)
+#	Also, ask if user wants to empy/clear oldmail (bad attempt?)
 if [[ ! -d Maildir/.oldmail  ]]; then
-				if ! mkdir -p Maildir/.oldmail; then
-					echo "Backup path ~/Maildir/.oldmail does not exist and I could not create the directory!"
-					exit 1
-				fi
-			fi
+	if ! mkdir -p Maildir/.oldmail; then
+		echo "Backup path ~/Maildir/.oldmail does not exist and I could not create the directory!"
+		exit 1
+	fi
+fi
 
 
 #mkdir Maildir/.oldmail
