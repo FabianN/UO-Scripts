@@ -9,8 +9,8 @@ cd ~/
 
 
 if [[ -e mailbackup.lock ]]; then
-	echo "Backup already in progress.  Aborting."
-	echo "If this message is in error please remove the mailbackup.lock file located in your home directory"
+	echo "Backup already in progress.  Aborting..."
+	echo "If this message is in error please remove the mailbackup.lock file located in your home directory."
 	exit 1
 else
 	touch mailbackup.lock
@@ -18,7 +18,7 @@ fi
 
 #Does the .oldmail dir exist?
 #To do: if .oldmail exists, put it into a sub-folder? (prompt as a question)
-#	Also, ask if user wants to empy/clear oldmail (bad attempt?)
+####### Also, ask if user wants to empy/clear oldmail (bad attempt?)
 if [[ ! -d Maildir/.oldmail  ]]; then
 	if ! mkdir -p Maildir/.oldmail; then
 		echo "Backup path ~/Maildir/.oldmail does not exist and I could not create the directory!"
@@ -27,11 +27,36 @@ if [[ ! -d Maildir/.oldmail  ]]; then
 fi
 
 
-#mkdir Maildir/.oldmail
+#Check the varables, are they clean?
+
+#Checking first setting, should be weekly 
+
+if [[ "$1" =~ "hourly" ]] ; then
+	echo "Picking from the hourly group..."
+	sleep 3
+
+elif [[ "$1" =~ "nightly" ]] ; then
+	echo "Picking from the nightly group..."
+	sleep 3
+elif [[ "$1" =~ "weekly" ]] ; then
+	echo "Picking from the weekly group..."
+	sleep 3
+elif [[ -z $1 ]] ; then
+	echo "Time range not set. Please pick a time-range. Choose hourly, weekly, nightly."
+	exit 0
+else
+	echo "Time range not set correctly. Please pick a time range spelled exactyl as so: hourly, weekly, nightly."
+	exit 0
+
+fi
+
+		
+
 
 
 #copy files into new folder
 #rsync -a --progress ~/Maildir/.snapshot/hourly.2/cur/ ~/Maildir/.oldmail/cur/
+
 
 
 #Ending message
