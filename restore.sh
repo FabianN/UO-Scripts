@@ -8,7 +8,13 @@
 cd ~/
 
 
-
+if [[ -e mailbackup.lock ]]; then
+	echo "Backup already in progress.  Aborting."
+	echo "If this message is in error please remove the mailbackup.lock file located in your home directory"
+	exit 1
+else
+	touch mailbackup.lock
+fi
 
 #Does the .oldmail dir exist?
 #To do: if .oldmail exists, put it into a sub-folder? (prompt as a question)
