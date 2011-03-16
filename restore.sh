@@ -5,18 +5,28 @@
 # than directed is not advisable.
 
 # Change variables to lowercase
-echo $1 | tr '[:upper:]' '[:lower:]'
+time=$( echo "$1" | tr -s  '[:upper:]'  '[:lower:]' )
+
 
 # Checking 2nd var, is number?
-if [ $2 -eq $2 2> /dev/null ]; then
-echo $2 is a number
+if [[ $2 = *[[:digit:]]* ]]; then
+	echo "$2 is numeric"
 else
-echo "You entered $2 as time-frame. This is not a number. Please enter a number."
-exit 0
+	echo "You entered $2 as time-frame. This is not a number. Please enter a number."
+	exit 0
 fi
+
+
+
+
+
+
 
 # Go to home directory
 cd ~/
+
+
+
 
 # Lock the task so that script is unable to run multiple times.
 if [[ -e mailbackup.lock ]]; then
@@ -27,22 +37,32 @@ else
 	touch mailbackup.lock
 fi
 
+
+
 #Does the .oldmail dir exist?
 #To do: if .oldmail exists, put it into a sub-folder? (prompt as a question)
 ####### Also, ask if user wants to empy/clear oldmail (they had a failed/bad attempt?)
 if [[ ! -d Maildir/.oldmail  ]]; then
 	if ! mkdir -p Maildir/.oldmail; then
 		echo "Backup path ~/Maildir/.oldmail does not exist and I could not create the directory!"
-		exit 1
+		exit 0
 	fi
 fi
 
 
-#Checking the time-range varable, are they clean?
+#Checking the varables, are they clean/correct?
 
 if [[ "$1" =~ "hourly" ]] ; then
 	echo "Picking from the hourly group..."
 
+		#Is the number somewhere between 0 and 26?
+		if [[ $2 -ge 0 && $2 -le 26 ]]; then
+		#Number good, continuing with script...
+			echo "Picking from the timeframe of $2"
+		else
+			echo "Time-frame is out-of range. You entered $2, I expect a number from 0 to 26. Please try again."
+			exit 0
+		fi
 
 	sleep 3
 
