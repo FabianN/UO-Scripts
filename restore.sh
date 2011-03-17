@@ -3,6 +3,7 @@
 # faculty, and other members. This script is only designed to function
 # on UO systems to restore UO mail. Using this script in any manner other
 # than directed is not advisable.
+# UO Mail Snapshot Restore v 1.0
 
 # Change variables to lowercase
 period=$( echo "$1" | tr '[:upper:]'  '[:lower:]' )
@@ -13,7 +14,7 @@ period=$( echo "$1" | tr '[:upper:]'  '[:lower:]' )
 if [[ $2 = *[[:digit:]]* ]]; then
 	elapsed=$2
 else
-	echo "You entered $2 as time-frame. This is not a number. Please enter a number."
+	echo "You entered $2 as elapsed time. This is not a number. Please enter a number."
 	exit 0
 fi
 
@@ -24,7 +25,7 @@ if [[ "$period" == "hourly" ]] ; then
 		#Number good, continuing with script...
 			time=hour
 		else
-			echo "Time-frame is out-of range. You entered $2, I expect a number from 0 to 26. Please try again."
+			echo "Elapsed time is out-of range for the hourly period. You entered $2, I expect a number from 0 to 26. Please try again."
 			exit 0
 		fi
 elif [[ "$period" =~ "nightly" ]] ; then
@@ -33,7 +34,7 @@ elif [[ "$period" =~ "nightly" ]] ; then
 		#Number good, continuing with script...
 			time=night
 		else
-			echo "Time-frame is out-of range. You entered $2, I expect a number from 0 to 26. Please try again."
+			echo "Elapsed time is out-of range for the nightly period. You entered $2, I expect a number from 0 to 30. Please try again."
 			exit 0
 		fi
 elif [[ "$period" =~ "weekly" ]] ; then
@@ -42,15 +43,15 @@ elif [[ "$period" =~ "weekly" ]] ; then
 		#Number good, continuing with script...
 			time=week
 		else
-			echo "Time-frame is out-of range. You entered $2, I expect a number from 0 to 26. Please try again."
+			echo "Elapsed time is out-of range for the weekly period. You entered $2, I expect a number from 0 to 3. Please try again."
 			exit 0
 		fi
 elif [[ -z $period ]] ; then
-	echo "Time range not set. Please pick a time-range. Choose hourly, weekly, nightly."
+	echo "Time period not set. Please pick a time period of hourly, weekly, nightly."
 	exit 0
 else
-	echo "Time range not set correctly. You entered $period."
-	echo "Please pick a time range spelled exactyl as so: hourly, weekly, nightly."
+	echo "Time period not set correctly. You entered $period."
+	echo "Please pick a time range spelled exactly as so: hourly, weekly, nightly."
 	exit 0
 fi
 
@@ -94,10 +95,7 @@ sleep 1
 echo "1..."
 sleep 1
 
-
 #copy files into new folder
-#rsync -a --progress ~/Maildir/.snapshot/$period.$elapsed/cur/ ~/Maildir/.oldmail/cur/
-
 if ! rsync -a --progress ~/Maildir/.snapshot/$period.$elapsed/cur/ ~/Maildir/.oldmail/cur/; then
 	echo "Snapshot restore process failed (rsync was unable to complete), please call the UO Help Desk at 541-346-4357 or e-mail at helpdes@uoregon.edu"
 	exit 0
@@ -112,5 +110,4 @@ echo "Mail backup has been completed. To get the mail to display in your inbox y
 echo "1.) Log into Webmail and then click on Prefrences."
 echo "2.) Click on the Folder tab near the top."
 echo "3.) Find the oldmail folder in the list to the left and check the checkbox next to it."
-
 exit 0
