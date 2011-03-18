@@ -19,41 +19,41 @@ else
 fi
 
 # Is the period spelled correctly?
-if [[ "$period" == "hourly" ]] ; then
-		#Is the number somewhere between 0 and 26?
-		if [[ $elapsed -ge 0 && $elapsed -le 26 ]]; then
-		#Number good, continuing with script...
-			time=hour
-		else
-			echo "Elapsed time is out-of range for the hourly period. You entered $2, I expect a number from 0 to 26. Please try again."
-			exit 0
-		fi
-elif [[ "$period" =~ "nightly" ]] ; then
-		#Is the number somewhere between 0 and 30?
-		if [[ $elapsed -ge 0 && $elapsed -le 30 ]]; then
-		#Number good, continuing with script...
-			time=night
-		else
-			echo "Elapsed time is out-of range for the nightly period. You entered $2, I expect a number from 0 to 30. Please try again."
-			exit 0
-		fi
-elif [[ "$period" =~ "weekly" ]] ; then
-		#Is the number somewhere between 0 and 3?
-		if [[ $elapsed -ge 0 && $elapsed -le 3 ]]; then
-		#Number good, continuing with script...
-			time=week
-		else
-			echo "Elapsed time is out-of range for the weekly period. You entered $2, I expect a number from 0 to 3. Please try again."
-			exit 0
-		fi
-elif [[ -z $period ]] ; then
-	echo "Time period not set. Please pick a time period of hourly, weekly, nightly."
-	exit 0
-else
-	echo "Time period not set correctly. You entered $period."
-	echo "Please pick a time range spelled exactly as so: hourly, weekly, nightly."
-	exit 0
-fi
+#if [[ "$period" == "hourly" ]] ; then
+#		#Is the number somewhere between 0 and 26?
+#		if [[ $elapsed -ge 0 && $elapsed -le 26 ]]; then
+#		#Number good, continuing with script...
+#			time=hour
+#		else
+#			echo "Elapsed time is out-of range for the hourly period. You entered $2, I expect a number from 0 to 26. Please try again."
+#			exit 0
+#		fi
+#elif [[ "$period" =~ "nightly" ]] ; then
+#		#Is the number somewhere between 0 and 30?
+#		if [[ $elapsed -ge 0 && $elapsed -le 30 ]]; then
+#		#Number good, continuing with script...
+#			time=night
+#		else
+#			echo "Elapsed time is out-of range for the nightly period. You entered $2, I expect a number from 0 to 30. Please try again."
+#			exit 0
+#		fi
+#elif [[ "$period" =~ "weekly" ]] ; then
+#		#Is the number somewhere between 0 and 3?
+#		if [[ $elapsed -ge 0 && $elapsed -le 3 ]]; then
+#		#Number good, continuing with script...
+#			time=week
+#		else
+#			echo "Elapsed time is out-of range for the weekly period. You entered $2, I expect a number from 0 to 3. Please try again."
+#			exit 0
+#		fi
+#elif [[ -z $period ]] ; then
+#	echo "Time period not set. Please pick a time period of hourly, weekly, nightly."
+#	exit 0
+#else
+#	echo "Time period not set correctly. You entered $period."
+#	echo "Please pick a time range spelled exactly as so: hourly, weekly, nightly."
+#	exit 0
+#fi
 
 # Go to home directory
 cd ~/
