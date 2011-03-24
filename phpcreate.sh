@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# Change to home directory
+cd ~/
+
+
+# Lock the script so more than one doesn't run at once
+if [[ -e phpsetup.lock ]]; then
+	echo "PHP setup already in progress.  Aborting..."
+	echo "If this message is in error please remove the mailbackup.lock file located in your home directory."
+	exit 1
+else
+	touch phpsetup.lock
+fi
 
 
 
