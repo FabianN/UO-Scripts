@@ -1,4 +1,10 @@
 #!/bin/bash
+# PHP setup script made by Fabian Norman (FabianN@gmail.com)
+# Made during Employment at UO IS Help Desk for use of UO Staff,
+# faculty, and other members. This script is only designed to function
+# on UO systems to get the web directory ready for php files.
+# Using this script in any manner other than directed is not advisable.
+# UO PHP Setup v 1.0
 
 # Change to home directory
 cd ~/
