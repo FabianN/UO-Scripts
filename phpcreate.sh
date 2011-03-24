@@ -67,3 +67,6 @@ EOF
 
 # Grant php.cgi and .htaccess the proper premissions.
 chmod 0755 php.cgi .htaccess
+
+
+rm -f phpsetup.lock
