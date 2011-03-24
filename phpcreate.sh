@@ -7,24 +7,22 @@ cd ~/
 # Lock the script so more than one doesn't run at once
 if [[ -e phpsetup.lock ]]; then
 	echo "PHP setup already in progress.  Aborting..."
-	echo "If this message is in error please remove the mailbackup.lock file located in your home directory."
+	echo "If this message is in error please remove the phpsetup.lock file located in your home directory."
 	exit 1
 else
 	touch phpsetup.lock
 fi
 
 
+# Does public_html exist? If not create
+if [[ ! -d public_html  ]]; then
+	if ! mkdir -p public_html; then
+		echo "ERROR : The web directory public_html does not exist and I could not create the directory!"
+		exit 1
+	fi
+fi
 
 
-############
-### .htaccess
-############
-echo "// Creating .htaccess in your public_html directory ($HOME/public_html) so all files ending in .php will execute"
-sleep 1
-
-mkdir ~/public_html > /dev/null 2>&1
-
-cd ~/public_html
 
 rm -f .htaccess
 
