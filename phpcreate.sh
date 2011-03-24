@@ -40,18 +40,17 @@ Action application/my-httpd-php /~$USER/php.cgi
 EOF
 
 
-echo ".htaccess file created, now creating php.cgi"
+echo ".htaccess file created, now creating php.cgi.."
+sleep 5
 
 
+# Remove current php.cgi
+if ! rm -f php.cgi; then
+	echo "ERROR : Unable to remove existing copy of php.cgi"
+	exit 1
+fi
 
-############
-### PHP.CGI
-############
-echo "// Creating php.cgi in your home directory ($HOME) so all files ending in .php will execute"
-sleep 1
-
-cd ~/public_html
-rm -f php.cgi
+# Create new php.cgi
 cat >> php.cgi << EOF
 #!/usr/local/bin/php5
 <?php
@@ -66,4 +65,5 @@ if (is_file($_SERVER['PATH_TRANSLATED']) &&
 ?>
 EOF
 
-chmod 0755 php.cgi
+# Grant php.cgi and .htaccess the proper premissions.
+chmod 0755 php.cgi .htaccess
