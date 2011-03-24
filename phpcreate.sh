@@ -22,17 +22,25 @@ if [[ ! -d public_html  ]]; then
 	fi
 fi
 
+# Change to public_html for work
 
+cd public_html
 
-rm -f .htaccess
+# remove current .htaccess
+if ! rm -f .htaccess; then
+	echo "ERROR : Unable to remove existing copy of .htaccess"
+	exit 1
+fi
 
+# Create new .htaccess
 cat >> .htaccess << EOF
 RemoveHandler .php
 AddType application/my-httpd-php .php
 Action application/my-httpd-php /~$USER/php.cgi
 EOF
 
-chmod 0755 .htaccess
+
+echo ".htaccess file created, now creating php.cgi"
 
 
 
