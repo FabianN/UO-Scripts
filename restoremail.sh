@@ -1,5 +1,5 @@
 #!/bin/bash
-# Mail restore script made by Fabian Norman (FabianN@gmail.com)
+# Mail restore script made by Fabian Norman (fnorman@uoregon.edu, FabianN@gmail.com)
 # Made during Employment at UO IS Help Desk for use of UO Staff,
 # faculty, and other members. This script is only designed to function
 # on UO systems to restore UO mail. Using this script in any manner other
