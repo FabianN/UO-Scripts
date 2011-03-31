@@ -1,8 +1,8 @@
 #!/bin/bash
-# PHP setup script made by Fabian Norman (FabianN@gmail.com)
+# PHP setup script made by Fabian Norman (fnorman@uoregon.edu, FabianN@gmail.com)
 # Made during Employment at UO IS Help Desk for use of UO Staff,
 # faculty, and other members. This script is only designed to function
-# on UO systems to get the web directory ready for php files.
+# on UO systems to prepare the web directory ready for php files.
 # Using this script in any manner other than directed is not advisable.
 # UO PHP Setup v 1.0
 
@@ -47,7 +47,7 @@ EOF
 
 
 echo ".htaccess file created, now creating php.cgi.."
-sleep 5
+sleep 3
 
 
 # Remove current php.cgi
@@ -78,4 +78,11 @@ chmod 0755 php.cgi .htaccess
 rm -f phpsetup.lock
 
 echo "!!COMPLETED!!"
-echo ".htaccess and php.cgi has been created.
+echo ".htaccess and php.cgi has been created."
+echo "To test if PHP is now functioning in your web directory create a test php file that contains:"
+echo "----------------"
+echo "<?php"
+echo "phpinfo();"
+echo "?>"
+echo "----------------"
+echo "If PHP is enabled when you load the test php file in your browser your browser will display server information on PHP settings, otherwise you will see the contents of your test php file."
