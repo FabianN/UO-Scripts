@@ -4,7 +4,7 @@
 # faculty, and other members. This script is only designed to function
 # on UO systems to restore UO mail. Using this script in any manner other
 # than directed is not advisable.
-# UO Mail Snapshot Restore v 1.0
+# UO Mail Snapshot Restore v 1.1
 
 echo ""
 echo "=========================="
@@ -45,14 +45,17 @@ if [[ ! -d "Maildir/.snapshot/$period.$elapsed" ]]; then
 	echo "-nightly: 0 to 30"
 	echo "-weekly: 0 to 3"
 	echo "---------"
-	echo "These numbers are subject to change"
+	echo "These numbers are subject to change."
+	echo "============"
+	echo "Here is a list of current directorys that are available:"
+	ls -a Maildir/.snapshot
 	exit 1
 fi
 
 # Lock the task so that script is unable to run multiple times.
 if [[ -e mailbackup.lock ]]; then
 	echo "Backup already in progress.  Aborting..."
-	echo "If this message is in error please remove the mailbackup.lock file located in your home directory."
+	echo "If this message is in error please remove the mailbackup.lock file located in your home directory to allow the script to run again."
 	exit 1
 else
 	touch mailbackup.lock
@@ -88,7 +91,7 @@ sleep 1
 
 #copy files into new folder
 if ! rsync -a --progress ~/Maildir/.snapshot/$period.$elapsed/cur/ ~/Maildir/.oldmail/cur/; then
-	echo "Snapshot restore process failed (rsync was unable to complete), please call the UO Help Desk at 541-346-4357 or e-mail at helpdesk@uoregon.edu"
+	echo "Snapshot restore process failed (rsync was unable to complete), please call the UO Help Desk at 541-346-4357 or e-mail at helpdesk@uoregon.edu for assistance"
 	exit 1
 fi
 
