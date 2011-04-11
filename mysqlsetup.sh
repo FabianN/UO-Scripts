@@ -10,9 +10,12 @@ cd ~/
 
 #Gather information
 echo "Welcome to the MySQL setup script. This script will configure the MySQL service on your user account"
-echo "Before we start I will need to have what you would like to set the MySQL root password to. It will be your responsibility to keep this password safe. If you lose it there is no garentee that the password can be recovered or reset."
+echo "Before I am able to setup MySQL for you I will need to collect some information."
+echo "First I will need to have what you would like to set the MySQL root password to."
+echo "It will be your responsibility to keep this password safe. If you lose it there is no garentee that the password can be recovered or reset."
 echo "------------------"
 echo " "
+
 PWD=0
 until [[ $PWD == 1 ]]; do #Re-run until PWD = 1
 	#Ask for the password twice
@@ -22,9 +25,7 @@ until [[ $PWD == 1 ]]; do #Re-run until PWD = 1
 	#Check if passwords match	
 	if [[ $PASSWORDA == $PASSWORDB ]]; then
 		echo "Passwords match!"
-		PASSWORD = $PASSWORDA
 		PWD=1
-		echo "Continuing with MySQL setup..."
 		echo "------------------"
 		echo " "
 		#Passwords match, set PWD to 1 and save password to PASSWORD var
@@ -37,21 +38,33 @@ until [[ $PWD == 1 ]]; do #Re-run until PWD = 1
 	fi
 done
 
-echo "Exited loop"
-
-: '
-echo "I will now create a lock file to prevent re-running this script. Please remove mysql.lock located in your home directory if you need to re-run this script."
-touch mysql.lock
-
-## Get port number
-
+echo "Now I will find an un-used port number to run MySQL off of."
+#Get port number
 PORT=0
 PORTOUTPUT=1
 while [ $PORTOUTPUT ]
 do
-	RANDNUM=$[ $RANDOM % 1000 + 5000 ] # generates a number between 5000 and 6000
+	RANDNUM=$[ $RANDOM % 1000 + 5000 ] #Generates a number between 5000 and 6000
 	PORT=$RANDNUM
 	PORTOUTPUT=`netstat -lt | grep $PORT`
 done
-echo "// For reference, the port number that MySQL is running on is: $PORT"
-'
+echo "MySQL will run off of the port $PORT."
+echo "You may need the port number in the future so be sure to note it down."
+echo "------------------"
+echo " "
+
+#Review information collected
+echo "I have collected the needed information. Please review the information listed below :"
+echo "=================="
+echo "Password : $PASSWORDA"
+echo "Port #   : $PORT"
+
+read -p "Setup MySQL now? (y/n)" REPLY
+if [[ "$REPLY" == "n" ]]; then
+	echo "Exiting the script..."
+	exit 0
+fi
+echo "I will now create a lock file to prevent re-running this script. Please remove mysql.lock located in your home directory if you need to re-run this script."
+#touch mysql.lock
+
+
