@@ -105,3 +105,30 @@ user=$USER
 pid-file=$HOME/mysql/mysql.pid
 err-log=$HOME/mysql/safe.log
 EOF
+#Start the MySQL process
+echo ".my.cnf file created. Now starting up the MySQL process..."
+/usr/bin/mysql_install_db > /dev/null 2>&1
+# sleep to make sure previous commands have finished
+sleep 4
+##Start Daemon
+echo "Starting the MySQL Daemon..."
+mysqld_safe --user=mysql < /dev/null > /dev/null 2> /dev/null &
+#Sleep to make sure previous commands have finished
+sleep 4
+echo "Setting up a cron job to ensure MySQL is running..."
+#Save the script so the cron job has something to call
+cat >> mysqld.sh << EOF
+if ! mysqladmin ping > /dev/null ; then
+       mysqld_safe &
+fi
+EOF
+#Make the file executable
+chmod 0755 mysqld.sh
+#Add the task to the local crontab
+cat >> crontab_local << EOF
+15,45 * * * * ./mysqld.sh
+EOF
+# change permissions just in case
+chmod 0755 crontab_local
+# set the crontab
+crontab crontab_local
