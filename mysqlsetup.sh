@@ -11,19 +11,29 @@ cd ~/
 #Gather information
 echo "Welcome to the MySQL setup script. This script will configure the MySQL service on your user account"
 echo "Before we start I will need to have what you would like to set the MySQL root password to. It will be your responsibility to keep this password safe. If you lose it there is no garentee that the password can be recovered or reset."
+echo "------------------"
+echo " "
 PWD=0
-until [[ $PWD == 1 ]]; do
+until [[ $PWD == 1 ]]; do #Re-run until PWD = 1
+	#Ask for the password twice
 	read -p "root password: " PASSWORDA
 	echo "Please re-enter the password to confirm"
 	read -p "Password Confirmation: " PASSWORDB
+	#Check if passwords match	
 	if [[ $PASSWORDA == $PASSWORDB ]]; then
-	echo "Passwords match!"
-	PWD=1
+		echo "Passwords match!"
+		PASSWORD = $PASSWORDA
+		PWD=1
+		echo "Continuing with MySQL setup..."
+		echo "------------------"
+		echo " "
+		#Passwords match, set PWD to 1 and save password to PASSWORD var
 	else
-	echo "Passwords do not match!"
-	echo "Please re-try entering the passwords."
-	echo "------------------"
-	echo " "
+		#Passwords do not match...
+		echo "Passwords do not match!"
+		echo "Please re-try entering the passwords."
+		echo "------------------"
+		echo " "
 	fi
 done
 
