@@ -9,6 +9,11 @@
 ########################################################################
 # Change to home dir
 cd ~
+if [[ -e mysql.lock ]]; then
+	echo "It appears that MySQL has already been configured for this account."
+	echo "If this message is incorrect you will need to manually remove mysql.lock from your home directory."
+	exit 1
+fi
 #Gather information
 echo "------------------"
 echo "Welcome to the MySQL setup script. This script will configure the MySQL service on your user account."
@@ -70,7 +75,7 @@ echo "If this information is correct please continue, otherwise cancel the scrip
 
 #Info correct?
 read -p "Continue? (y/n)" REPLY
-if [[ "$REPLY" == "n" ]]; then
+if [[ "$REPLY" = "n" ]]; then
 	echo "Exiting the script..."
 	exit 0
 fi
