@@ -1,4 +1,6 @@
 #!/bin/bash
+# UO MySQL setup script v 1.0
+########################################################################
 # MySQL setup script made by Fabian Norman (fnorman@uoregon.edu, FabianN@gmail.com)
 # Made during Employment at UO IS Help Desk for use of UO Staff,
 # faculty, and other members. This script is only designed to function
