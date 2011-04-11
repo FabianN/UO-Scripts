@@ -74,68 +74,68 @@ if [[ "$REPLY" == "n" ]]; then
 fi
 echo " "
 echo "I will now create a lock file to prevent re-running this script. Please remove mysql.lock located in your home directory if you need to re-run this script."
-##touch mysql.lock
+touch mysql.lock
 echo " "
-##rm -f .htaccess
+rm -f .htaccess
 echo "Making .my.cnf..."
 sleep 1
 echo " "
 #Generate .my.cnf
-##cat >> .my.cnf << EOF
-##[mysqld]
-##datadir=$HOME/mysql/
-##socket=$HOME/mysql/mysql.sock
-##port=$PORT
-##user=$USER
+cat >> .my.cnf << EOF
+[mysqld]
+datadir=$HOME/mysql/
+socket=$HOME/mysql/mysql.sock
+port=$PORT
+user=$USER
 
-##[mysql]
-##socket=$HOME/mysql/mysql.sock
-##port=$PORT
-##user=$USER
+[mysql]
+socket=$HOME/mysql/mysql.sock
+port=$PORT
+user=$USER
 
-##[mysql.server]
-##user=$PORT
-##basedir=$HOME/mysql/
+[mysql.server]
+user=$PORT
+basedir=$HOME/mysql/
 
-##[client]
-##host=127.0.0.1
-##socket=$HOME/mysql/mysql.sock
-##port=$PORT
-##user=$USER
+[client]
+host=127.0.0.1
+socket=$HOME/mysql/mysql.sock
+port=$PORT
+user=$USER
 
-##[safe_mysqld]
-##pid-file=$HOME/mysql/mysql.pid
-##err-log=$HOME/mysql/safe.log
-##EOF
+[safe_mysqld]
+pid-file=$HOME/mysql/mysql.pid
+err-log=$HOME/mysql/safe.log
+EOF
 #Start the MySQL process
 echo ".my.cnf file created. Now starting up the MySQL process..."
-##/usr/bin/mysql_install_db > /dev/null 2>&1
+/usr/bin/mysql_install_db > /dev/null 2>&1
 # sleep to make sure previous commands have finished
 sleep 4
 echo " "
-##Start Daemon
+Start Daemon
 echo "Starting the MySQL Daemon..."
-##mysqld_safe --user=mysql < /dev/null > /dev/null 2> /dev/null &
+mysqld_safe --user=mysql < /dev/null > /dev/null 2> /dev/null &
 #Sleep to make sure previous commands have finished
 sleep 4
 echo " "
 echo "Setting up a cron job to insure MySQL is running..."
 #Save the script so the cron job has something to call
-##cat >> mysqld.sh << EOF
-##if ! mysqladmin ping > /dev/null ; then
-##       mysqld_safe &
-##fi
-##EOF
+cat >> mysqld.sh << EOF
+if ! mysqladmin ping > /dev/null ; then
+       mysqld_safe &
+fi
+EOF
 #Make the file executable
-##chmod 0755 mysqld.sh
+chmod 0755 mysqld.sh
 #Add the task to the local crontab
-##cat >> crontab_local << EOF
-##15,45 * * * * ./mysqld.sh
-##EOF
+cat >> crontab_local << EOF
+15,45 * * * * ./mysqld.sh
+EOF
 # change permissions just in case
-##chmod 0755 crontab_local
+chmod 0755 crontab_local
 # set the crontab
-##crontab crontab_local
+crontab crontab_local
 echo " "
 echo "++++++++++++++++++"
 echo "MySQL has been setup on your user account."
