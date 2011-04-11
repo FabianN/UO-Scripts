@@ -62,7 +62,6 @@ echo "=================="
 echo "Password : $PASSWORDA"
 echo "Port #   : $PORT"
 echo "=================="
-echo "If you loose this information there is no garantee it can be recovered. Ensure that you note this information down"
 echo " "
 echo "If this information is correct please continue, otherwise cancel the script."
 
@@ -132,3 +131,17 @@ EOF
 chmod 0755 crontab_local
 # set the crontab
 crontab crontab_local
+echo "++++++++++++++++++"
+echo "MySQL has been setup on your user account."
+echo ""
+echo "Here is a summery of important MySQL information:"
+echo "=================="
+echo "MySQL Host                    : shell.uoregon.edu:$PORT"
+echo "MySQL 'root' account password : $PASSWORDA"
+echo "=================="
+echo " "
+echo "If you wish to install a web application such as wordpress it is highly recomended that you first use MySQL's root account to first create an secondary account specifically for wordpress, granting it only the access required for wordpress. Use that account's login for the MySQL database instead of the root account."
+echo " "
+echo "You may interact with the MySQL database via shell by typing 'mysql'."
+echo "You will then be brougt to the MySQL command line. You can leave the MySQL command line by typing 'exit'"
+echo "A summery of MySQL commands can be found at http://www.pantz.org/software/mysql/mysqlcommands.html"
