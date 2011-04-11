@@ -75,4 +75,33 @@ fi
 echo " "
 echo "I will now create a lock file to prevent re-running this script. Please remove mysql.lock located in your home directory if you need to re-run this script."
 touch mysql.lock
+rm -f .htaccess
+echo "Making .my.cnf..."
+sleep 1
+#Generate .my.cnf
+cat >> .my.cnf << EOF
+[mysqld]
+datadir=$HOME/mysql/
+socket=$HOME/mysql/mysql.sock
+port=$PORT
+user=$USER
 
+[mysql]
+socket=$HOME/mysql/mysql.sock
+port=$PORT
+user=$USER
+
+[mysql.server]
+user=$PORT
+basedir=$HOME/mysql/
+
+[client]
+host=127.0.0.1
+socket=$HOME/mysql/mysql.sock
+port=$PORT
+user=$USER
+
+[safe_mysqld]
+pid-file=$HOME/mysql/mysql.pid
+err-log=$HOME/mysql/safe.log
+EOF
