@@ -9,6 +9,7 @@
 ########################################################################
 # Change to home dir
 cd ~
+#Check for lock
 if [[ -e mysql.lock ]]; then
 	echo "It appears that MySQL has already been configured for this account."
 	echo "If this message is incorrect you will need to manually remove mysql.lock from your home directory."
@@ -81,6 +82,8 @@ if [[ "$REPLY" = "n" ]]; then
 fi
 echo " "
 echo "I will now create a lock file to prevent re-running this script. Please remove mysql.lock located in your home directory if you need to re-run this script."
+rm .my.cnf
+rm mysqld.sh
 touch mysql.lock
 echo " "
 rm -f .htaccess
