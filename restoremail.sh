@@ -16,7 +16,7 @@ echo "Starting Mail restore process..."
 # Go to home directory
 cd ~/
 
-#Checking the varables, are they clean/correct?
+#Checking the variables, are they clean/correct?
 
 # Change the period to lowercase
 period=$( echo "$1" | tr '[:upper:]'  '[:lower:]' )
@@ -50,7 +50,7 @@ if [[ ! -d "Maildir/.snapshot/$period.$elapsed" ]]; then
 	echo "---------"
 	echo "These numbers are subject to change."
 	echo "============"
-	echo "Here is a list of current directorys that are available:"
+	echo "Here is a list of current directory that are available:"
 	ls -a Maildir/.snapshot
 	exit 1
 fi
@@ -66,7 +66,7 @@ fi
 
 #Does the .oldmail dir exist?
 #To do: if .oldmail exists, put it into a sub-folder? (prompt as a question)
-####### Also, ask if user wants to empy/clear oldmail (they had a failed/bad attempt?)
+####### Also, ask if user wants to empty/clear oldmail (they had a failed/bad attempt?)
 if [[ ! -d Maildir/.oldmail  ]]; then
 	if ! mkdir -p Maildir/.oldmail; then
 		echo "Backup path ~/Maildir/.oldmail does not exist and I could not create the directory!"
@@ -103,8 +103,8 @@ rm mailbackup.lock
 
 #Ending message
 echo "============================================"
-echo "Mail backup has been completed. To get the mail to display in your inbox you will have to manually add the oldmail folder to webmail. Follow these directions to add the folder to Webmail."
-echo "1.) Log into Webmail and then click on Prefrences."
+echo "Mail backup has been completed. To get the mail to display in your inbox you will have to manually add the oldmail folder to webmail. Follow these directions to add the folder to webmail."
+echo "1.) Log into Webmail and then click on Preferences."
 echo "2.) Click on the Folder tab near the top."
 echo "3.) Find the oldmail folder in the list to the left and check the checkbox next to it."
 exit 0
