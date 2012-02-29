@@ -18,39 +18,79 @@ cd ~/
 
 #Checking the variables, are they clean/correct?
 
-# Change the period to lowercase
-period=$( echo "$1" | tr '[:upper:]'  '[:lower:]' )
+##Are the variables set? Otherwise ask for them.
+if [[ -z $1 ]]; then
+	#First variable (should be the period) is not set
+	echo 'The time period has not been set yet, please select which time period (hourly, nightly, weekly) you wish to restore from.'
+	select period in hourly nightly weekly
+	do
+		echo ""
+		echo "You have selected $period."
+		sleep 2
+		echo ""
+		break;
+	done
+	if [[ -z $2 ]]; then
+		echo 'The amount of time elapsed has not been selected. Please indicate how far back you want to restore from.'
+		echo 'Remember, the number you select here will be the number of periods back in time we will be restoring from.'
+		echo ''
+		echo "As of 2/29/2012 valid elapsed time amounts are:"
+		echo "-hourly: 0 to 26"
+		echo "---NOTE : Hourly snapshots are taken every two hours, not every hour."
+		echo "-nightly: 0 to 30"
+		echo "-weekly: 0 to 3"
+		echo ""
+		echo "Enter a number:"
+		read elapsed
+		echo ""
+		echo "You have selected $elapsed"
+		sleep 2
+	fi
+fi
+
+
+
+if [[ -n $1 ]]; then
+	# Change the period to lowercase
+	period=$( echo "$1" | tr '[:upper:]'  '[:lower:]' )
+fi
 
 # Is the period spelled correctly?
 if [[ "$period" == "hourly" || "$period" == "nightly" || "$period" == "weekly" ]]; then
 	sleep 0
 else
-	echo "Invalid time period chosen. Please pick hourly, nightly, or weekly and ensure that you spell it correctly"
+	echo "Invalid time period chosen. Please pick hourly, nightly, or weekly and ensure that you spell it correctly."
 	exit 1
 fi
 
-# Checking elapsed time, is number?
-if [[ $2 = *[[:digit:]]* ]]; then
+## Set elapsed time o an easy to work with variable, but only if it is set (otherwise it may damage with user provided input)
+if [[ -n $2 ]]; then
 	elapsed=$2
-elif [[ -z $2 ]] ; then
-	echo "Elapsed time not set. Please pick how far back you want to restore from."
-	exit 1
+fi
+
+# Checking elapsed time, is number?
+if [[ $elapsed = *[[:digit:]]* ]]; then
+	sleep 0
+###Not needed
+#elif [[ -z $2 ]] ; then
+#	echo "Elapsed time not set. Please pick how far back you want to restore from."
+#	exit 1
 else
-	echo "You entered $2 as elapsed time. This is not a number. Please enter a number."
+	echo "You entered $elapsed as elapsed time. This is not a number. Please enter a number."
 	exit 1
 fi
 
 # Does the snapshot directory we want to recover from exist?
 if [[ ! -d "Maildir/.snapshot/$period.$elapsed" ]]; then
 	echo "Sorry, the $period.$elapsed snapshot is not available."
-	echo "As of 3/18/2011 valid elapsed time amounts are:"
+	echo "As of 2/29/2012 valid elapsed time amounts are:"
 	echo "-hourly: 0 to 26"
 	echo "-nightly: 0 to 30"
 	echo "-weekly: 0 to 3"
 	echo "---------"
 	echo "These numbers are subject to change."
 	echo "============"
-	echo "Here is a list of current directory that are available:"
+	echo "Here is a list of current snapshots that are available:"
 	ls -a Maildir/.snapshot
 	exit 1
 fi
@@ -73,6 +113,12 @@ if [[ ! -d Maildir/.oldmail  ]]; then
 		exit 1
 	fi
 fi
+
+#TODO: Check Maildir size and if at the quota limit check if user wants to continue.
+# SAMPLE:
+# du -shb git/ |awk '{print $1}'
+#MAILDIRSIZE=du
+
 		
 #Provide pre-run summary
 echo "I will now restore all mail backed-up $period $elapsed(s) ago."
