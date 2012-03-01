@@ -21,11 +21,12 @@ cd ~/
 ##Are the variables set? Otherwise ask for them.
 if [[ -z $1 ]]; then
 	#First variable (should be the period) is not set
-	echo 'The time period has not been set yet, please select which time period (hourly, nightly, weekly) you wish to restore from.'
+	echo 'The time period has not been set yet, please select which time period (hourly, nightly, or weekly) you wish to restore from.'
 	select period in hourly nightly weekly
 	do
 		echo ""
 		echo "You have selected $period."
+		echo "=========================="
 		sleep 2
 		echo ""
 		break;
@@ -44,7 +45,9 @@ if [[ -z $1 ]]; then
 		read elapsed
 		echo ""
 		echo "You have selected $elapsed"
+		echo "=========================="
 		sleep 2
+		echo ""
 	fi
 fi
 
@@ -95,6 +98,21 @@ if [[ ! -d "Maildir/.snapshot/$period.$elapsed" ]]; then
 	exit 1
 fi
 
+# Restore to old-mail or main Maildir folder?
+echo "Do you want to restore the mail to an oldmail folder or into the Maildir folder?"
+echo "If you restore to the Maildir folder you will merge your current mail and the backup together."
+echo "If you restore to the oldmail folder any e-mail that you currently have in your mailbox and is also in the backup will be duplicated under the oldmail folder."
+echo "If you restore to the oldmail folder also make sure the user has adiquate space in their user account to acomidate the snapshot."
+
+select maildir in oldmail maildir;
+do
+    break;
+done
+echo "You have selected to restore the backup into the $maildir folder."
+echo "=========================="
+sleep 2
+echo ""
+
 # Lock the task so that script is unable to run multiple times.
 if [[ -e mailbackup.lock ]]; then
 	echo "Backup already in progress.  Aborting..."
@@ -105,14 +123,17 @@ else
 fi
 
 #Does the .oldmail dir exist?
-#To do: if .oldmail exists, put it into a sub-folder? (prompt as a question)
+#TODO: if .oldmail exists, put it into a sub-folder? (prompt as a question)
 ####### Also, ask if user wants to empty/clear oldmail (they had a failed/bad attempt?)
-if [[ ! -d Maildir/.oldmail  ]]; then
+
+
+if [[ $maildir == 'oldmail' && ! -d Maildir/.oldmail  ]]; then
 	if ! mkdir -p Maildir/.oldmail; then
 		echo "Backup path ~/Maildir/.oldmail does not exist and I could not create the directory!"
 		exit 1
 	fi
 fi
+
 
 #TODO: Check Maildir size and if at the quota limit check if user wants to continue.
 # SAMPLE:
@@ -139,9 +160,21 @@ echo "1..."
 sleep 1
 
 #copy files into new folder
-if ! rsync -a --progress ~/Maildir/.snapshot/$period.$elapsed/cur/ ~/Maildir/.oldmail/cur/; then
-	echo "Snapshot restore process failed (rsync was unable to complete), please call the UO Help Desk at 541-346-4357 or e-mail at helpdesk@uoregon.edu for assistance"
-	exit 1
+#TODO: make restore process play nice with two different folders.
+if [[ $maildir == 'oldmail' ]]; then
+	if ! rsync -a --progress ~/Maildir/.snapshot/$period.$elapsed/cur/ ~/Maildir/.oldmail/cur/; then
+		echo "Snapshot restore process failed (rsync was unable to complete), please call the UO Help Desk at 541-346-4357 or e-mail at helpdesk@uoregon.edu for assistance"
+		exit 1
+	fi
+elif [[ $maildir == 'maildir' ]]; then
+	if ! rsync -a --progress ~/Maildir/.snapshot/$period.$elapsed/ ~/Maildir/; then
+		echo "Snapshot restore process failed (rsync was unable to complete), please call the UO Help Desk at 541-346-4357 or e-mail at helpdesk@uoregon.edu for assistance"
+		exit 1
+	fi
+else
+	echo "Somehow what location you want to restore mail to was not set."
+	echo "Try again, if you get the same error message again please contact the UO Help Desk."
+	echo "You can call the Help Desk at 541-346-4357 or e-mail at helpdesk@uoregon.edu."
 fi
 
 # Remove the mailbackup lock
@@ -153,4 +186,3 @@ echo "Mail backup has been completed. To get the mail to display in your inbox y
 echo "1.) Log into Webmail and then click on Preferences."
 echo "2.) Click on the Folder tab near the top."
 echo "3.) Find the oldmail folder in the list to the left and check the checkbox next to it."
-exit 0
