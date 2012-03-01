@@ -32,9 +32,9 @@ if [[ -z $1 ]]; then
 		break;
 	done
 	if [[ -z $2 ]]; then
-		echo 'The amount of time elapsed has not been selected. Please indicate how far back you want to restore from.'
-		echo 'Remember, the number you select here will be the number of periods back in time we will be restoring from.'
-		echo ''
+		echo "The amount of time elapsed has not been selected. Please indicate how far back you want to restore from."
+		echo "Remember, the number you select here will be the number of periods back in time we will be restoring from."
+		echo ""
 		echo "As of 2/29/2012 valid elapsed time amounts are:"
 		echo "-hourly: 0 to 26"
 		echo "---NOTE : Hourly snapshots are taken every two hours, not every hour."
@@ -160,7 +160,6 @@ echo "1..."
 sleep 1
 
 #copy files into new folder
-#TODO: make restore process play nice with two different folders.
 if [[ $maildir == 'oldmail' ]]; then
 	if ! rsync -a --progress ~/Maildir/.snapshot/$period.$elapsed/cur/ ~/Maildir/.oldmail/cur/; then
 		echo "Snapshot restore process failed (rsync was unable to complete), please call the UO Help Desk at 541-346-4357 or e-mail at helpdesk@uoregon.edu for assistance"
@@ -182,7 +181,10 @@ rm mailbackup.lock
 
 #Ending message
 echo "============================================"
-echo "Mail backup has been completed. To get the mail to display in your inbox you will have to manually add the oldmail folder to webmail. Follow these directions to add the folder to webmail."
-echo "1.) Log into Webmail and then click on Preferences."
-echo "2.) Click on the Folder tab near the top."
-echo "3.) Find the oldmail folder in the list to the left and check the checkbox next to it."
+echo "Mail backup has been completed."
+if [[ $maildir == 'oldmail' ]]; then
+	echo "To get the mail to display in your inbox you will have to manually add the oldmail folder to webmail. Follow these directions to add the folder to webmail."
+	echo "1.) Log into Webmail and then click on Preferences."
+	echo "2.) Click on the Folder tab near the top."
+	echo "3.) Find the oldmail folder in the list to the left and check the checkbox next to it."
+fi
