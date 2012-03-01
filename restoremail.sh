@@ -23,6 +23,7 @@ cd ~/
 if [[ -z $1 ]]; then
 	#First variable (should be the period) is not set
 	echo "The time period has not been set yet, please select which time period (hourly, nightly, or weekly) you wish to restore from."
+	echo ""
 	echo "Choose the time period :"
 	select period in hourly nightly weekly
 	do
@@ -104,8 +105,9 @@ fi
 echo "Do you want to restore the mail to an oldmail folder or into the Maildir folder?"
 echo "If you restore to the Maildir folder you will merge your current mail and the backup together."
 echo "If you restore to the oldmail folder any e-mail that you currently have in your mailbox and is also in the backup will be duplicated under the oldmail folder."
-echo "If you restore to the oldmail folder also make sure the user has adiquate space in their user account to acomidate the snapshot."
-
+echo "If you restore to the oldmail folder also make sure the user has adequate space in their user account to accommodate the snapshot."
+echo ""
+echo "Select which folder to restore the mail to:"
 select maildir in oldmail maildir;
 do
     break;
@@ -144,7 +146,7 @@ fi
 
 		
 #Provide pre-run summary
-echo "I will now restore all mail backed-up in the $period piriods, snapshot number $elapsed."
+echo "I will now restore all mail backed-up in the $period periods, snapshot number $elapsed."
 echo "The mail will be restored to the $maildir folder"
 echo ""
 echo "To cancel press Ctrl-Z."
