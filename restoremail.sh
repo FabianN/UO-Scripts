@@ -12,6 +12,7 @@
 echo ""
 echo "=========================="
 echo "Starting Mail restore process..."
+echo ""
 
 # Go to home directory
 cd ~/
@@ -21,7 +22,8 @@ cd ~/
 ##Are the variables set? Otherwise ask for them.
 if [[ -z $1 ]]; then
 	#First variable (should be the period) is not set
-	echo 'The time period has not been set yet, please select which time period (hourly, nightly, or weekly) you wish to restore from.'
+	echo "The time period has not been set yet, please select which time period (hourly, nightly, or weekly) you wish to restore from."
+	echo "Choose the time period :"
 	select period in hourly nightly weekly
 	do
 		echo ""
@@ -36,10 +38,10 @@ if [[ -z $1 ]]; then
 		echo "Remember, the number you select here will be the number of periods back in time we will be restoring from."
 		echo ""
 		echo "As of 2/29/2012 valid elapsed time amounts are:"
-		echo "-hourly: 0 to 26"
+		echo "-hourly : 0 to 26"
 		echo "---NOTE : Hourly snapshots are taken every two hours, not every hour."
-		echo "-nightly: 0 to 30"
-		echo "-weekly: 0 to 3"
+		echo "-nightly : 0 to 30"
+		echo "-weekly : 0 to 3"
 		echo ""
 		echo "Enter a number:"
 		read elapsed
@@ -142,8 +144,8 @@ fi
 
 		
 #Provide pre-run summary
-echo "I will now restore all mail backed-up $period $elapsed(s) ago."
-echo "The mail will be restored to an oldmail folder"
+echo "I will now restore all mail backed-up in the $period piriods, snapshot number $elapsed."
+echo "The mail will be restored to the $maildir folder"
 echo ""
 echo "To cancel press Ctrl-Z."
 echo ""
@@ -181,6 +183,7 @@ rm mailbackup.lock
 
 #Ending message
 echo "============================================"
+echo ""
 echo "Mail backup has been completed."
 if [[ $maildir == 'oldmail' ]]; then
 	echo "To get the mail to display in your inbox you will have to manually add the oldmail folder to webmail. Follow these directions to add the folder to webmail."
