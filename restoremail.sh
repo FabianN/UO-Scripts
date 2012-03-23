@@ -13,7 +13,6 @@ echo ""
 echo "=========================="
 echo "Starting Mail restore process..."
 echo ""
-
 # Go to home directory
 cd ~/
 
@@ -22,10 +21,10 @@ cd ~/
 ##Are the variables set? Otherwise ask for them.
 if [[ -z $1 ]]; then
 	#First variable (should be the period) is not set
-	echo "The time period has not been set yet, please select which time period (hourly, nightly, or weekly) you wish to restore from."
+	echo "The time period has not been set yet, please select which time period (bi-hourly, nightly, or weekly) you wish to restore from."
 	echo ""
-	echo "Choose the time period :"
-	select period in hourly nightly weekly
+	echo "Choose the time period (ENTER A NUMBER: 1|2|3) :"
+	select period in bi-hourly nightly weekly
 	do
 		echo ""
 		echo "You have selected $period."
@@ -35,14 +34,21 @@ if [[ -z $1 ]]; then
 		break;
 	done
 	if [[ -z $2 ]]; then
+		#Second variable (should be time elapsed, a #) is not set
 		echo "The amount of time elapsed has not been selected. Please indicate how far back you want to restore from."
 		echo "Remember, the number you select here will be the number of periods back in time we will be restoring from."
 		echo ""
 		echo "As of 2/29/2012 valid elapsed time amounts are:"
-		echo "-hourly : 0 to 26"
-		echo "---NOTE : Hourly snapshots are taken every two hours, not every hour."
-		echo "-nightly : 0 to 30"
-		echo "-weekly : 0 to 3"
+		if [[ $period == 'bi-hourly' ]]; then
+			echo "-bi-hourly : 0 to 26"
+			echo "---NOTE : Bi-hourly snapshots are taken every two hours, not every hour."
+		elif [[ $period == 'nightly' ]]; then
+			echo "-nightly : 0 to 30"
+		elif [[ $period == 'weekly' ]]; then
+			echo "-weekly : 0 to 3"
+		else 
+			echo "!!ERROR:--INVALID PERIOD--"
+		fi
 		echo ""
 		echo "Enter a number:"
 		read elapsed
@@ -62,10 +68,10 @@ if [[ -n $1 ]]; then
 fi
 
 # Is the period spelled correctly?
-if [[ "$period" == "hourly" || "$period" == "nightly" || "$period" == "weekly" ]]; then
+if [[ "$period" == "bi-hourly" || "$period" == "nightly" || "$period" == "weekly" ]]; then
 	sleep 0
 else
-	echo "Invalid time period chosen. Please pick hourly, nightly, or weekly and ensure that you spell it correctly."
+	echo "!!ERROR: Invalid time period chosen. Please pick bi-hourly, nightly, or weekly and ensure that you spell it correctly."
 	exit 1
 fi
 
@@ -82,15 +88,22 @@ if [[ $elapsed = *[[:digit:]]* ]]; then
 #	echo "Elapsed time not set. Please pick how far back you want to restore from."
 #	exit 1
 else
-	echo "You entered $elapsed as elapsed time. This is not a number. Please enter a number."
+	echo "!!ERROR: You entered $elapsed as elapsed time. This is not a number. Please enter a number."
 	exit 1
 fi
 
+if [[ $period == 'bi-hourly' ]]; then
+	timespan=hourly
+else
+	timespan=$period
+fi
+
+
 # Does the snapshot directory we want to recover from exist?
-if [[ ! -d "Maildir/.snapshot/$period.$elapsed" ]]; then
+if [[ ! -d "Maildir/.snapshot/$timespan.$elapsed" ]]; then
 	echo "Sorry, the $period.$elapsed snapshot is not available."
 	echo "As of 2/29/2012 valid elapsed time amounts are:"
-	echo "-hourly: 0 to 26"
+	echo "-bi-hourly: 0 to 26"
 	echo "-nightly: 0 to 30"
 	echo "-weekly: 0 to 3"
 	echo "---------"
@@ -107,7 +120,7 @@ echo "If you restore to the Maildir folder you will merge your current mail and 
 echo "If you restore to the oldmail folder any e-mail that you currently have in your mailbox and is also in the backup will be duplicated under the oldmail folder."
 echo "If you restore to the oldmail folder also make sure the user has adequate space in their user account to accommodate the snapshot."
 echo ""
-echo "Select which folder to restore the mail to:"
+echo "Select which folder to restore the mail to (1|2):"
 select maildir in oldmail maildir;
 do
     break;
@@ -133,7 +146,7 @@ fi
 
 if [[ $maildir == 'oldmail' && ! -d Maildir/.oldmail  ]]; then
 	if ! mkdir -p Maildir/.oldmail; then
-		echo "Backup path ~/Maildir/.oldmail does not exist and I could not create the directory!"
+		echo "!!ERROR: Backup path ~/Maildir/.oldmail does not exist and I could not create the directory!"
 		exit 1
 	fi
 fi
@@ -165,16 +178,17 @@ sleep 1
 
 #copy files into new folder
 if [[ $maildir == 'oldmail' ]]; then
-	if ! rsync -a --progress ~/Maildir/.snapshot/$period.$elapsed/cur/ ~/Maildir/.oldmail/cur/; then
-		echo "Snapshot restore process failed (rsync was unable to complete), please call the UO Help Desk at 541-346-4357 or e-mail at helpdesk@uoregon.edu for assistance"
+	if ! rsync -a --progress ~/Maildir/.snapshot/$timespan.$elapsed/cur/ ~/Maildir/.oldmail/cur/; then
+		echo "!!ERROR: Snapshot restore process failed (rsync was unable to complete), please call the UO Help Desk at 541-346-4357 or e-mail at helpdesk@uoregon.edu for assistance"
 		exit 1
 	fi
 elif [[ $maildir == 'maildir' ]]; then
-	if ! rsync -a --progress ~/Maildir/.snapshot/$period.$elapsed/ ~/Maildir/; then
-		echo "Snapshot restore process failed (rsync was unable to complete), please call the UO Help Desk at 541-346-4357 or e-mail at helpdesk@uoregon.edu for assistance"
+	if ! rsync -a --progress ~/Maildir/.snapshot/$timespan.$elapsed/ ~/Maildir/; then
+		echo "!!ERROR: Snapshot restore process failed (rsync was unable to complete), please call the UO Help Desk at 541-346-4357 or e-mail at helpdesk@uoregon.edu for assistance"
 		exit 1
 	fi
 else
+	echo "!!ERROR:"
 	echo "Somehow what location you want to restore mail to was not set."
 	echo "Try again, if you get the same error message again please contact the UO Help Desk."
 	echo "You can call the Help Desk at 541-346-4357 or e-mail at helpdesk@uoregon.edu."
