@@ -1,7 +1,7 @@
 #!/bin/bash
 # UO Mail Snapshot Restore v 1.1
 ########################################################################
-# Mail restore script made by Fabian Norman (fnorman@uoregon.edu, FabianN@gmail.com)
+# Mail restore script made by Fabian Norman (fnorman AT uoregon DOT edu, FabianN AT gmail DOT com)
 # Made during Employment at UO IS Help Desk for use of UO Staff,
 # faculty, and other members. This script is only designed to function
 # on UO systems to restore UO mail. Using this script in any manner other
