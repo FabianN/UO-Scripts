@@ -125,7 +125,12 @@ select maildir in oldmail maildir;
 do
     break;
 done
-echo "You have selected to restore the backup into the $maildir folder."
+if [[ $maildir == 'oldmail' || $maildir == 'maildir' ]]; then
+	echo "You have selected to restore the backup into the $maildir folder."
+else
+	echo "You did not select a valid location for the backup to be stored to. Please run the script again and either enter 1 to restore mail to an oldmail folder or enter 2 to restore mail to the inbox."
+	exit 0
+fi
 echo "=========================="
 sleep 2
 echo ""
