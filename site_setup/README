@@ -1,0 +1,19 @@
+Site Setup
+==========
+
+
+These scripts help with setting up a PHP/MySQL site in your UO web-space.
+
+If you want to setup a wordpress site check out UO blogs at blogs.uoregon.edu.
+
+
+mysqlsetup.sh
+-------------
+
+This script will help you setup an instance of MySQL. Read all the directions provided by the script when running it.
+
+
+phpcreate.sh
+------------
+
+This script will setup a series of files that will cause PHP to be processed by the server.
