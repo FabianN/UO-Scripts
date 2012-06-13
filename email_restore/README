@@ -1,0 +1,9 @@
+E-Mail Restore
+==============
+
+This script will assist you in restoring your e-mail from a snapshot.
+
+
+Known Issues:
+- Can not detect when account is near quota limit, if user is out of space this script could potentially use the little bit of space left and error out.
+
