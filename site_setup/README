@@ -10,7 +10,7 @@ If you want to setup a wordpress site check out UO blogs at blogs.uoregon.edu.
 mysqlsetup.sh
 -------------
 
-This script will help you setup an instance of MySQL. Read all the directions provided by the script when running it.
+This script has been removed because it no longer functions and setting up MySQL under the user account is no longer supported by the UO Systems. If you would like to setup a Wordpress instance checkout http://blogs.uoregon.edu/. If you are a CIS student and need to setup MySQL please check out https://systems.cs.uoregon.edu/wiki/index.php?n=Help.ToolsMysql or speak to your professor if you need assistance.
 
 
 phpcreate.sh
